@@ -8,14 +8,13 @@ jobs:
     runs-on: windows-latest
 
     steps:
-
       - name: checkout code
         uses: actions/checkout@v4.1.7
 
       - name: Set up .NET Core
         uses: actions/setup-dotnet@v4.0.1
         with:
-          dotnet-version: '8.x'
+          dotnet-version: "8.x"
 
       - name: Build code
         run: dotnet build --configuration Release
@@ -30,14 +29,13 @@ jobs:
           name: .net-app
           path: ${{env.DOTNET_ROOT}}\myapp
 
-
   call-reusable-deployment-workflow-job:
     needs: build-job
 
-    uses:  ./.github/workflows/reusable-deploy-shared-repo.yml
+    uses: ./.github/workflows/reusable-deploy.yml
     with:
       package-name: .net-app
       app-name: appsvc1
       deployment-slot: development
-    secrets: 
+    secrets:
       azure-profile: ${{ secrets.AZURE_PUBLISH_PROFILE }}
